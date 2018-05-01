@@ -11,6 +11,7 @@ const sendFileOptions = {
 
 mongoose.Promise = global.Promise;
 
+//saves snapshot to DB and sends success message to user
 saveSnapshot = (req, res) => {
     const snapshot = new Snapshot({
         imageURL: req.body.imageURL,
@@ -25,6 +26,7 @@ saveSnapshot = (req, res) => {
     });
 }
 
+//provides Amazon S3 config to front-end so snapshot image can be saved to AWS
 getAmazonConfig = (req, res) => {
     let amazonConfig = '{ "url":"' + config.aws.url +
         '", "bucketName" :"' + config.aws.bucketName +
