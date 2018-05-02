@@ -9,8 +9,6 @@ const expect = require('chai').expect,
 
     const app = require('../server.js')
 
-mongoose.Promise = global.Promise;
-
 describe('loadExpress', () => {
     it('should respond to /', (done) => {
         request(app)
@@ -26,18 +24,6 @@ describe('loadExpress', () => {
         request(app)
             .get('/foo/bar')
             .expect(404, done);
-    });
-});
-
-describe('loadSnapshotUpload', () => {
-    it('should send HTML file', (done) => {
-        request(app)
-          .get('/upload-snapshot')
-          .end((err, res) => {
-            expect(res.statusCode).to.equal(200); 
-            expect(res.header['content-type']).to.equal('text/html; charset=UTF-8');
-            done();
-      });
     });
 });
 

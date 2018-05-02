@@ -1,17 +1,17 @@
 
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== 'production'|| process.env.NODE_ENV !== 'test') {
   require('dotenv').load();
 }
 
 const express = require('express'),
   app = express(),
   mongoose = require('mongoose'),
-  routes = require('./routes'),
+  routes = require('./routes/routes'),
   bodyParser = require('body-parser'),
-  config = require("./config.js").get(process.env.NODE_ENV),
-  path = require('path'),
-  snapshotController = require
-    ("./controllers/snapshot_controller.js");
+  config = require('./config.js').get(process.env.NODE_ENV),
+  path = require('path');
+
+mongoose.Promise = global.Promise;
 
 mongoose.connect(config.database.uri);
 mongoose.connection

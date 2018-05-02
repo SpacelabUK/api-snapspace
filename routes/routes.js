@@ -1,12 +1,13 @@
 const express = require('express'),
-      config = require("./config.js").get(process.env.NODE_ENV),
-      snapshotController = require("./controllers/snapshot_controller.js");
+path = require('path'),
+      config = require("../config.js").get(process.env.NODE_ENV),
+      { getAmazonConfig, saveSnapshot } = require("../controllers/snapshot_controller.js");
 
 const router = express.Router();
 
 const sendFileOptions = {
     root: config.root
-  }
+};
 
 router.get('/', (req, res) => {
     res.redirect('/upload-snapshot');
@@ -23,9 +24,9 @@ router.get('/view-snapshots', (req, res) => {
 });
 
 //provides Amazon S3 config to front-end so snapshot image can be saved to AWS
-router.get('/amazon-config', snapshotController.getAmazonConfig);
+router.get('/amazon-config', getAmazonConfig);
 
 //saves snapshot to DB
-router.post('/snapshot', snapshotController.saveSnapshot);
+router.post('/snapshot', saveSnapshot);
 
 module.exports = router;
