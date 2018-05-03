@@ -1,5 +1,4 @@
 const expect = require('chai').expect,
-    config = require('../config.js').get(process.env.NODE_ENV),
     request = require('supertest'),
     validator = require('validator');
 
