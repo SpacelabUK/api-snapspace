@@ -34,6 +34,7 @@
     "mocha": "^5.0.5",
     "nodeman": "^1.1.2",
     "sinon": "^4.5.0",
-    "supertest": "^3.0.0"
+    "supertest": "^3.0.0",
+    "validator": "^10.0.0"
   }
 }

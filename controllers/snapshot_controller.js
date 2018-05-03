@@ -24,20 +24,7 @@ const saveSnapshot = (req, res) => {
     });
 }
 
-//provides Amazon S3 config to front-end so snapshot image can be saved to AWS
-const getAmazonConfig = (req, res) => {
-    const amazonConfig = {
-        "url": config.aws.url,
-        "bucketName": config.aws.bucketName,
-        "secretKey": config.aws.secretKey,
-        "accessKey": config.aws.accessKey,
-        "region": config.aws.region
-    };
-    res.send(amazonConfig);
-}
-
 module.exports = {
-    getAmazonConfig,
     saveSnapshot
 };
 

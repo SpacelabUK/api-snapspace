@@ -2,7 +2,6 @@
 const expect = require('chai').expect,
     assert = require('assert'),
     request = require('supertest'),
-    express = require('express'),
     config = require('../config.js').get(process.env.NODE_ENV),
     Snapshot = require('../models/snapshots.js'),
     mongoose = require('mongoose');
@@ -10,15 +9,6 @@ const expect = require('chai').expect,
     const app = require('../server.js')
 
 describe('loadExpress', () => {
-    it('should respond to /', (done) => {
-        request(app)
-          .get('/')
-          .expect(302, done)
-          .end((err, res) => {
-            if (err) return done(err);
-            done();
-      });
-    });
 
     it('should 404 unknown endpoint', (done) => {
         request(app)
