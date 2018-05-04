@@ -3,12 +3,11 @@ const AWS = require('aws-sdk'),
 
 const getSignedAWSURL = (req, res) => {
 
-    const s3 = new AWS.S3()
-    AWS.config.update({
-        accessKeyId: process.env.AWS_ACCESS_KEY_ID, 
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
-    })
-    
+    const credentials = new AWS.SharedIniFileCredentials({ profile: 'snapspace-app' });
+    AWS.config.credentials = credentials;
+
+    const s3 = new AWS.S3();
+
     const myBucket = config.aws.bucketName;
     const myKey = req.query.imageFileName;
     const signedUrlExpireSeconds = 60 * 5;
