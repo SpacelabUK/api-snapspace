@@ -7,6 +7,7 @@ var config = {
       url: 'https://s3.eu-west-2.amazonaws.com/',
       accessKey: process.env.AWS_ACCESS_KEY_ID,
       secretKey: process.env.AWS_SECRET_ACCESS_KEY,
+      signatureVersion: 'v4',
       region: "eu-west-2"
     },
     database: {
@@ -21,6 +22,7 @@ var config = {
       url: 'https://s3.eu-west-2.amazonaws.com/',
       accessKey: process.env.AWS_ACCESS_KEY_ID,
       secretKey: process.env.AWS_SECRET_ACCESS_KEY,
+      signatureVersion: 'v4',
       region: "eu-west-2"
     },
     database: {
@@ -34,6 +36,7 @@ var config = {
       url: 'https://s3.eu-west-2.amazonaws.com/',
       accessKey: process.env.AWS_ACCESS_KEY_ID,
       secretKey: process.env.AWS_SECRET_ACCESS_KEY,
+      signatureVersion: 'v4',
       region: "eu-west-2"
     },
     app: {

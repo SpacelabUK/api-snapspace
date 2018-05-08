@@ -5,6 +5,7 @@
   "dependencies": {
     "aws-sdk": "^2.224.1",
     "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
     "dotenv": "^5.0.1",
     "express": "^4.14.0",
     "file-system": "^2.2.2",
@@ -18,7 +19,7 @@
   "scripts": {
     "start": "node server.js",
     "test": "set NODE_ENV=development&&mocha --exit",
-    "development": "set NODE_ENV=development&&node server.js"
+    "dev": "set NODE_ENV=development&&node server.js"
   },
   "repository": {
     "type": "git",

@@ -4,12 +4,14 @@ const expect = require('chai').expect,
 
 const app = require('../server.js')
 
-describe('getSignedAWSURL', () => {
+describe('getAWSConfig', () => {
 
     it('should return a valid URL', (done) => {
         request(app)
-            .get('/signedAWSURL')
-            .query({ imageFileName: 'imageFileName' })
+            .get('/image-aws-config')
+            .query({ 
+                imageFileName: 'imageFileName'
+            })
             .expect( (res) => {
                 if (!validator.isURL(res.body.signedAWSURL)) {
                     throw new Error('No URL');

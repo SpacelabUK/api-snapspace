@@ -1,28 +1,33 @@
 const AWS = require('aws-sdk'),
     config = require('../config.js').get(process.env.NODE_ENV);
 
-const getSignedAWSURL = (req, res) => {
+const getAWSConfig = (req, res) => {
 
     const credentials = new AWS.SharedIniFileCredentials({ profile: 'snapspace-app' });
     AWS.config.credentials = credentials;
 
-    const s3 = new AWS.S3();
+    const s3 = new AWS.S3({
+        signatureVersion: config.aws.signatureVersion,
+        region: config.aws.region
+    });
 
     const myBucket = config.aws.bucketName;
     const myKey = req.query.imageFileName;
     const signedUrlExpireSeconds = 60 * 5;
 
-    const signedAWSURL = {
+    const awsConfig = {
         signedAWSURL: s3.getSignedUrl('putObject', {
             Bucket: myBucket,
             Key: myKey,
-            Expires: signedUrlExpireSeconds
-        })
+            Expires: signedUrlExpireSeconds,
+            ACL: 'public-read'
+        }),
+        imageURL: config.aws.url + myBucket + '/' + myKey
     };
 
-    res.send(signedAWSURL);
+    res.send(awsConfig);
 }
 
 module.exports = {
-    getSignedAWSURL
+    getAWSConfig
 };

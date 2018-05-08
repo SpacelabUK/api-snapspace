@@ -5,6 +5,7 @@ if (process.env.NODE_ENV !== 'production'|| process.env.NODE_ENV !== 'test') {
 
 const express = require('express'),
   app = express(),
+  cors = require('cors'),
   mongoose = require('mongoose'),
   routes = require('./routes/routes'),
   bodyParser = require('body-parser'),
@@ -23,6 +24,8 @@ mongoose.connection
 app.use(bodyParser.json({ limit: '50mb' }));
 
 app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
+
+app.use(cors());
 
 app.use('/', routes);
 
