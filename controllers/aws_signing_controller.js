@@ -5,8 +5,10 @@ const getAWSConfig = (req, res) => {
 
     console.log("config request received")
 
-    const credentials = new AWS.SharedIniFileCredentials({ profile: 'snapspace-app' });
-    AWS.config.credentials = credentials;
+    if (process.env.NODE_ENV == 'development') {
+        const credentials = new AWS.SharedIniFileCredentials({ profile: 'snapspace-app' });
+        AWS.config.credentials = credentials;
+    }
 
     const s3 = new AWS.S3({
         signatureVersion: config.aws.signatureVersion,
