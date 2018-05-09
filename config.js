@@ -27,7 +27,8 @@ var config = {
     },
     database: {
       uri: process.env.MONGODB_URI
-    }
+    },
+    root: __dirname
   },
 
   development: {
