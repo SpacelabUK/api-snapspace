@@ -5,7 +5,7 @@ const express = require('express'),
 const router = express.Router();
 
 //provides Amazon S3 config to front-end so snapshot image can be saved to AWS
-router.get('/image-aws-config', getAWSConfig);
+router.get('/image-aws-config/:image-name', getAWSConfig);
 
 //saves snapshot to DB
 router.post('/snapshot', saveSnapshot);
