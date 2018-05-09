@@ -3,8 +3,6 @@ const AWS = require('aws-sdk'),
 
 const getAWSConfig = (req, res) => {
 
-    console.log("config request received")
-
     if (process.env.NODE_ENV == 'development') {
         const credentials = new AWS.SharedIniFileCredentials({ profile: 'snapspace-app' });
         AWS.config.credentials = credentials;
@@ -28,6 +26,8 @@ const getAWSConfig = (req, res) => {
         }),
         imageURL: config.aws.url + myBucket + '/' + myKey
     };
+
+    console.log(awsConfig);
 
     res.send(awsConfig);
 }
