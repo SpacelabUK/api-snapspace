@@ -1,5 +1,3 @@
-/* global describe it */
-
 const request = require('supertest');
 const validator = require('validator');
 

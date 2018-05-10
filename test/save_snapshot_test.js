@@ -1,4 +1,4 @@
-/* global describe it before beforeEach */
+
 /* eslint no-unused-expressions: 0 */
 
 const { expect } = require('chai');
