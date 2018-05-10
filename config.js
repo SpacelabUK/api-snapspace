@@ -1,5 +1,5 @@
 
-var config = {
+const config = {
 
   production: {
     aws: {
@@ -8,12 +8,12 @@ var config = {
       accessKey: process.env.AWS_ACCESS_KEY_ID,
       secretKey: process.env.AWS_SECRET_ACCESS_KEY,
       signatureVersion: 'v4',
-      region: "eu-west-2"
+      region: 'eu-west-2',
     },
     database: {
-      uri: process.env.MONGODB_URI
+      uri: process.env.MONGODB_URI,
     },
-    root: __dirname
+    root: __dirname,
   },
 
   test: {
@@ -23,12 +23,12 @@ var config = {
       accessKey: process.env.AWS_ACCESS_KEY_ID,
       secretKey: process.env.AWS_SECRET_ACCESS_KEY,
       signatureVersion: 'v4',
-      region: "eu-west-2"
+      region: 'eu-west-2',
     },
     database: {
-      uri: process.env.MONGODB_URI
+      uri: process.env.MONGODB_URI,
     },
-    root: __dirname
+    root: __dirname,
   },
 
   development: {
@@ -38,19 +38,19 @@ var config = {
       accessKey: process.env.AWS_ACCESS_KEY_ID,
       secretKey: process.env.AWS_SECRET_ACCESS_KEY,
       signatureVersion: 'v4',
-      region: "eu-west-2"
+      region: 'eu-west-2',
     },
     app: {
-      port: 8080
+      port: 8080,
     },
     database: {
-      uri: 'mongodb://localhost:27017/snapspace_dev'
+      uri: 'mongodb://localhost:27017/snapspace_dev',
     },
-    root: __dirname
-  }
+    root: __dirname,
+  },
 
-}
+};
 
 exports.get = function get(env) {
   return config[env];
-}
+};

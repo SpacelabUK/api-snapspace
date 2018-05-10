@@ -33,6 +33,9 @@
   "homepage": "https://github.com/SpacelabUK/snapspace#readme",
   "devDependencies": {
     "chai": "^4.1.2",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.11.0",
     "mocha": "^5.0.5",
     "nodeman": "^1.1.2",
     "sinon": "^4.5.0",

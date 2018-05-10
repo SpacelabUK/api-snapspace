@@ -1,22 +1,18 @@
 
-if (process.env.NODE_ENV !== 'production'|| process.env.NODE_ENV !== 'test') {
-  require('dotenv').load();
-}
+const express = require('express');
+const cors = require('cors');
+const mongoose = require('mongoose');
+const routes = require('./routes/routes');
+const bodyParser = require('body-parser');
+const config = require('./config.js').get(process.env.NODE_ENV);
+const path = require('path');
 
-const express = require('express'),
-  app = express(),
-  cors = require('cors'),
-  mongoose = require('mongoose'),
-  routes = require('./routes/routes'),
-  bodyParser = require('body-parser'),
-  config = require('./config.js').get(process.env.NODE_ENV),
-  path = require('path');
-
+const app = express();
 mongoose.Promise = global.Promise;
 
 mongoose.connect(config.database.uri);
 mongoose.connection
-  .once('open', () => { console.log("DB connection complete") })
+  .once('open', () => { console.log('DB connection complete'); })
   .on('error', (error) => {
     console.log(error);
   });
