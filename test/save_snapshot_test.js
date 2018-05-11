@@ -35,12 +35,19 @@ describe('createSnapshotRecord', () => {
     });
   });
 
+  afterEach((done) => {
+    mongoose.connection.collections.snapshots.drop(() => {
+      done();
+    });
+  });
+
   it('should create a new snapshot record if image URL is a valid URL', (done) => {
     const snapshot = new Snapshot({
       imageURL: 'https://s3.eu-west-2.amazonaws.com/snapspace-dev/1524242200913.jpg',
       comment: 'comment',
     });
     snapshot.save()
+      .catch(err => console.log(err))
       .then(() => {
         assert(!snapshot.isNew);
         done();
@@ -49,7 +56,6 @@ describe('createSnapshotRecord', () => {
 
   it('should be invalid if image URL is empty', (done) => {
     const snapshot = new Snapshot({ comment: 'comment' });
-
     snapshot.validate((err) => {
       expect(err.errors.imageURL).to.exist;
       done();
@@ -58,11 +64,37 @@ describe('createSnapshotRecord', () => {
 
   it('should be invalid if image URL is not a valid URL', (done) => {
     const snapshot = new Snapshot({ imageURL: 'test' });
-
     snapshot.validate((err) => {
       expect(err.errors.imageURL).to.exist;
       done();
     });
+  });
+
+  it('should respond with 422 and error message if comment is not provided', (done) => {
+    const snapshot = new Snapshot({
+      imageURL: 'https://s3.eu-west-2.amazonaws.com/snapspace-dev/1524242200913.jpg',
+      comment: '',
+    });
+    request(app)
+      .post('/snapshot')
+      .send(snapshot)
+      .expect(422)
+      .expect((res) => {
+        expect(res.body.error.message).to.exist;
+      })
+      .end(done);
+  });
+
+  it('should respond with 422 and error message if image URL is not valid', (done) => {
+    const snapshot = new Snapshot({ imageURL: 'test' });
+    request(app)
+      .post('/snapshot')
+      .send(snapshot)
+      .expect(422)
+      .expect((res) => {
+        expect(res.body.error.message).to.exist;
+      })
+      .end(done);
   });
 });
 

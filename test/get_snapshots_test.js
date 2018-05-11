@@ -13,17 +13,6 @@ describe('getSnapshots', () => {
     comment: 'comment',
   });
 
-  /*   const snapshots = [
-    {
-      imageURL: 'https://validurl2.com',
-      comment: 'comment',
-    },
-    {
-      imageURL: 'https://validurl3.com',
-      comment: 'comment2',
-    },
-  ]; */
-
   afterEach((done) => {
     mongoose.connection.collections.snapshots.drop(() => {
       done();
@@ -32,6 +21,7 @@ describe('getSnapshots', () => {
 
   it('should return a JSON object', (done) => {
     snapshot.save()
+      .catch(err => console.log(err))
       .then(() => {
         request(app)
           .get('/snapshots')
@@ -48,7 +38,6 @@ describe('getSnapshots', () => {
           .get('/snapshots')
           .expect((res) => {
             console.log(res.body);
-            console.log(res.body[0]);
             const resSnapshot = res.body.snapshots[0];
             if (resSnapshot.comment !== snapshot.comment) throw new Error('Comment does not match DB doc');
             if (resSnapshot.imageURL !== snapshot.imageURL) throw new Error('ImageURL does not match DB doc');

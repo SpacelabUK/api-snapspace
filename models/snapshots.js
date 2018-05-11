@@ -6,7 +6,7 @@ const { Schema } = mongoose;
 const imageURLValidator = [
   validate({
     validator: 'isURL',
-    message: 'Image URL should be a valid URL',
+    message: 'invalid image URL',
   }),
 ];
 
@@ -14,9 +14,9 @@ const SnapshotSchema = new Schema({
   imageURL: {
     type: String,
     required: true,
-    validate: imageURLValidator,
+    validate: (imageURLValidator),
   },
-  comment: { type: String, required: false },
+  comment: { type: String, required: true },
 });
 
 const Snapshot = mongoose.model('snapshot', SnapshotSchema);

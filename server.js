@@ -25,6 +25,15 @@ app.use(cors());
 
 app.use('/', routes);
 
+app.use((err, req, res, next) => {
+  res.status(err.status || 500);
+  res.json({
+    error: {
+      message: err.message,
+    },
+  });
+});
+
 app.use(express.static(path.join(config.root)));
 
 app.listen(process.env.PORT || config.app.port);
