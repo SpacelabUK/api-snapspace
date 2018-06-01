@@ -9,6 +9,7 @@ module.exports = {
     },
     "rules": {
       "linebreak-style": ["error", "windows"],
-      "no-unused-vars": ["error", { "argsIgnorePattern": "next" }]
+      "no-unused-vars": ["error", { "argsIgnorePattern": "next" }],
+      "no-underscore-dangle": 0
   }
   };

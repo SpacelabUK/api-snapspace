@@ -3,7 +3,6 @@
 
 const request = require('supertest');
 const Snapshot = require('../models/snapshots.js');
-const snapshotController = require('../controllers/snapshot_controller.js');
 const mongoose = require('mongoose');
 const sinon = require('sinon');
 const chai = require('chai');
