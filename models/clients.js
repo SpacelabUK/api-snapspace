@@ -6,14 +6,14 @@ const SnapshotRequestSchema = new Schema({
   name: { type: String, required: true },
 });
 
+const ProjectSchema = new Schema({
+  name: { type: String, required: true },
+  snapshotRequests: [SnapshotRequestSchema],
+});
+
 const ClientSchema = new Schema({
   name: { type: String, required: true },
-  projects: [
-    {
-      name: { type: String, required: true },
-      snapshotRequests: [SnapshotRequestSchema],
-    },
-  ],
+  projects: [ProjectSchema],
 });
 
 const Client = mongoose.model('client', ClientSchema);
