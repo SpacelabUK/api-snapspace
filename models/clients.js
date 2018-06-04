@@ -4,6 +4,11 @@ const { Schema } = mongoose;
 
 const SnapshotRequestSchema = new Schema({
   name: { type: String, required: true },
+  status: {
+    type: String,
+    enum: ['deleted', 'active'],
+    required: true,
+  },
 });
 
 const ProjectSchema = new Schema({

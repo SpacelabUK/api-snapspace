@@ -10,6 +10,7 @@ module.exports = {
     "rules": {
       "linebreak-style": ["error", "windows"],
       "no-unused-vars": ["error", { "argsIgnorePattern": "next" }],
-      "no-underscore-dangle": 0
+      "no-underscore-dangle": 0,
+      "no-restricted-syntax": ["error", "ForInStatement", "LabeledStatement", "WithStatement"],
   }
   };

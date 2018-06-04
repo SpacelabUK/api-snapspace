@@ -6,6 +6,7 @@ const getSnapshots = (req, res, next) => {
   Snapshot.find({})
     .sort({ createdAt: -1 })
     .exec((err, snapshots) => {
+      console.error(err);
       if (err) next(err.message);
       else res.json(snapshots);
     });
