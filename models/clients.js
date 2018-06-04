@@ -4,6 +4,7 @@ const { Schema } = mongoose;
 
 const SnapshotRequestSchema = new Schema({
   name: { type: String, required: true },
+  sequence: { type: Number, required: true },
   status: {
     type: String,
     enum: ['deleted', 'active'],

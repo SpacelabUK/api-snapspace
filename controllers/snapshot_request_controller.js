@@ -16,13 +16,10 @@ const saveSnapshotRequests = async (req, res, next) => {
       const currentRequest = currentRequests.id(updatedRequest._id);
       if (currentRequest) {
         currentRequest.name = updatedRequest.name;
+        currentRequest.sequence = updatedRequest.sequence;
         currentRequest.status = 'active';
       } else {
-        const newRequest = {
-          name: updatedRequest.name,
-          status: 'active',
-        };
-        currentRequests.push(newRequest);
+        currentRequests.push(updatedRequest);
       }
     }
 
@@ -38,11 +35,11 @@ const saveSnapshotRequests = async (req, res, next) => {
     }
 
     client = await client.save();
-
-    res.status(200).send(client);
+    res.status(200).json(currentRequests);
   } catch (err) {
+    const error = new Error(err.message);
     console.log(err);
-    next(err);
+    next(error);
   }
 };
 
