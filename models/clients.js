@@ -4,16 +4,22 @@ const { Schema } = mongoose;
 
 const SnapshotRequestSchema = new Schema({
   name: { type: String, required: true },
+  sequence: { type: Number, required: true },
+  status: {
+    type: String,
+    enum: ['deleted', 'active'],
+    required: true,
+  },
+});
+
+const ProjectSchema = new Schema({
+  name: { type: String, required: true },
+  snapshotRequests: [SnapshotRequestSchema],
 });
 
 const ClientSchema = new Schema({
   name: { type: String, required: true },
-  projects: [
-    {
-      name: { type: String, required: true },
-      snapshotRequests: [SnapshotRequestSchema],
-    },
-  ],
+  projects: [ProjectSchema],
 });
 
 const Client = mongoose.model('client', ClientSchema);
