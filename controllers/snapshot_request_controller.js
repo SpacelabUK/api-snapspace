@@ -38,7 +38,6 @@ const saveSnapshotRequests = async (req, res, next) => {
     res.status(200).json(currentRequests);
   } catch (err) {
     const error = new Error(err.message);
-    console.log(err);
     next(error);
   }
 };

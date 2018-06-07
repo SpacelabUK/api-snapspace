@@ -1,14 +1,19 @@
 
 const Snapshot = require('../models/snapshots.js');
 
-//  saves snapshot to DB and sends success message to user
 const getSnapshots = (req, res, next) => {
   Snapshot.find({})
     .sort({ createdAt: -1 })
     .exec((err, snapshots) => {
-      console.error(err);
-      if (err) next(err.message);
-      else res.json(snapshots);
+      if (err) {
+        next(err.message);
+      } else if (!Array.isArray(snapshots) || !snapshots.length) {
+        const error = new Error('Snapshots not found');
+        error.status = 404;
+        next(error);
+      } else {
+        res.json(snapshots);
+      }
     });
 };
 

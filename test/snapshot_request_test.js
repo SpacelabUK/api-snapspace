@@ -105,4 +105,18 @@ describe('snapshot_request_controller.js', () => {
       expect(updatedClient.projects[0].snapshotRequests[1].name).to.equal('name4');
     });
   });
+
+  describe('getSnapshotRequests', () => {
+    beforeEach(() => {
+    });
+
+    afterEach((done) => {
+      mongoose.connection.collections.clients.drop(() => {
+        done();
+      });
+    });
+
+    it('should return a JSON object and 200 success status', async () => {
+    });
+  });
 });

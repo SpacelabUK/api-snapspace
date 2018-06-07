@@ -4,6 +4,7 @@
 const request = require('supertest');
 const Snapshot = require('../models/snapshots.js');
 const mongoose = require('mongoose');
+const config = require('../config.js').get(process.env.NODE_ENV);
 const sinon = require('sinon');
 const chai = require('chai');
 chai.use(require('sinon-chai'));
@@ -12,9 +13,13 @@ const { expect } = chai;
 const app = require('../server.js');
 
 describe('getSnapshots', () => {
-  const snapshot = new Snapshot({
-    imageURL: 'https://validurl.com',
-    comment: 'comment',
+  let snapshot;
+
+  beforeEach(() => {
+    snapshot = new Snapshot({
+      imageURL: 'https://validurl.com',
+      comment: 'comment',
+    });
   });
 
   afterEach((done) => {
@@ -23,33 +28,31 @@ describe('getSnapshots', () => {
     });
   });
 
-  it('should return a JSON object', (done) => {
-    snapshot.save()
-      .catch(err => console.log(err))
-      .then(() => {
-        request(app)
-          .get('/snapshots')
-          .expect('Content-Type', /json/)
-          .expect(200, done);
-      });
+  it('should return in JSON format, with 200 status', async () => {
+    await snapshot.save();
+
+    const response = await request(app)
+      .get('/snapshots');
+
+    expect(response.statusCode).to.equal(200);
+    expect(response.type).to.equal('application/json');
   });
 
-  it('should return snapshot from collection', (done) => {
-    snapshot.save()
-      .catch(err => console.log(err))
-      .then(() => {
-        request(app)
-          .get('/snapshots')
-          .expect((res) => {
-            const resSnapshot = res.body.snapshots[0];
-            if (resSnapshot.comment !== snapshot.comment) throw new Error('Comment does not match DB doc');
-            if (resSnapshot.imageURL !== snapshot.imageURL) throw new Error('ImageURL does not match DB doc');
-          })
-          .end((err) => {
-            if (err) return done(err);
-            return done();
-          });
-      });
+  it('should return snapshot from collection', async () => {
+    await snapshot.save();
+
+    const response = await request(app)
+      .get('/snapshots');
+
+    expect(response.body[0].comment).to.equal(snapshot.comment);
+    expect(response.body[0].imageURL).to.equal(snapshot.imageURL);
+  });
+
+  it('should return 404 if no snapshots found', async () => {
+    const response = await request(app)
+      .get('/snapshots');
+
+    expect(response.statusCode).to.equal(404);
   });
 
   it('should return an error if database fails to return data', (done) => {
