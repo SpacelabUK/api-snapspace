@@ -1,7 +1,7 @@
 const express = require('express');
 const { saveSnapshot, getSnapshots } = require('../controllers/snapshot_controller.js');
 const { getAWSConfig } = require('../controllers/aws_signing_controller.js');
-const { saveSnapshotRequests } = require('../controllers/snapshot_request_controller');
+const { saveSnapshotRequests, getSnapshotRequests } = require('../controllers/snapshot_request_controller');
 
 const router = express.Router();
 
@@ -9,6 +9,8 @@ const router = express.Router();
 router.get('/image-aws-config', getAWSConfig);
 
 router.get('/snapshots', getSnapshots);
+
+router.get('/client/:clId/project/:prId/snapshotRequests', getSnapshotRequests);
 
 // saves snapshot to DB
 router.post('/snapshot', saveSnapshot);

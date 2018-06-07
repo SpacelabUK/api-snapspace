@@ -107,7 +107,19 @@ describe('snapshot_request_controller.js', () => {
   });
 
   describe('getSnapshotRequests', () => {
+    let client;
+
     beforeEach(() => {
+      client = new Client({
+        name: 'Client',
+        projects: [
+          {
+            name: 'Project',
+            snapshotRequests: [{ status: 'active', name: 'name1', sequence: 1 },
+              { status: 'active', name: 'name2', sequence: 2 }],
+          },
+        ],
+      });
     });
 
     afterEach((done) => {
@@ -117,6 +129,24 @@ describe('snapshot_request_controller.js', () => {
     });
 
     it('should return a JSON object and 200 success status', async () => {
+      const savedClient = await client.save();
+
+      const snapshotRequestsUrl = `/client/${savedClient._id}/project/${savedClient.projects[0]._id}/snapshotRequests`;
+      const response = await request(app)
+        .get(snapshotRequestsUrl);
+
+      expect(response.statusCode).to.equal(200);
+      expect(response.type).to.equal('application/json');
+    });
+
+    it.only('should return snapshot requests for the specified client and project', async () => {
+      const savedClient = await client.save();
+
+      const snapshotRequestsUrl = `/client/${savedClient._id}/project/${savedClient.projects[0]._id}/snapshotRequests`;
+      const response = await request(app)
+        .get(snapshotRequestsUrl);
+
+      expect(response.body[0].name).to.equal('name1');
     });
   });
 });

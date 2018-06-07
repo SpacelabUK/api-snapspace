@@ -1,5 +1,26 @@
 const Client = require('../models/clients.js');
 
+const getSnapshotRequests = async (req, res, next) => {
+  try {
+    const client = await Client.findOne({
+      _id: req.params.clId,
+    });
+
+    const { snapshotRequests } = client.projects.id(req.params.prId);
+
+    if (!Array.isArray(snapshotRequests) || !snapshotRequests.length) {
+      const error = new Error('Snapshot requests not found');
+      error.status = 404;
+      next(error);
+    } else {
+      res.status(200).json(snapshotRequests);
+    }
+  } catch (err) {
+    const error = new Error(err.message);
+    next(error);
+  }
+};
+
 //  saves snapshot request to DB and sends success message to user
 const saveSnapshotRequests = async (req, res, next) => {
   try {
@@ -43,5 +64,5 @@ const saveSnapshotRequests = async (req, res, next) => {
 };
 
 module.exports = {
-  saveSnapshotRequests,
+  saveSnapshotRequests, getSnapshotRequests,
 };
