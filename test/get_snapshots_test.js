@@ -55,18 +55,15 @@ describe('getSnapshots', () => {
     expect(response.statusCode).to.equal(404);
   });
 
-  it('should return an error if database fails to return data', (done) => {
+  it('should return an error if database fails to return data', async () => {
     /* eslint no-unused-vars: 0 */
     const snapshotStub = sinon.stub(Snapshot, 'find');
     snapshotStub.throws();
-    request(app)
-      .get('/snapshots')
-      .expect(500)
-      .end((err) => {
-        snapshotStub.restore();
-        if (err) return done(err);
-        return done();
-      });
+
+    const response = await request(app)
+      .get('/snapshots');
+
+    expect(response.statusCode).to.equal(500);
   });
 });
 
