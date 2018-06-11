@@ -22,7 +22,9 @@ describe('snapshot_request_controller.js', () => {
         });
     });
 
-    beforeEach(() => {
+    beforeEach(async () => {
+      await mongoose.connection.collections.clients.drop();
+
       req = {
         snapshotRequests: [{ status: 'active', name: 'name1', sequence: 1 },
           { status: 'active', name: 'name2', sequence: 2 }],
@@ -35,12 +37,6 @@ describe('snapshot_request_controller.js', () => {
             name: 'Project',
           },
         ],
-      });
-    });
-
-    afterEach((done) => {
-      mongoose.connection.collections.clients.drop(() => {
-        done();
       });
     });
 
@@ -131,7 +127,8 @@ describe('snapshot_request_controller.js', () => {
   describe('getSnapshotRequests', () => {
     let client;
 
-    beforeEach(() => {
+    beforeEach(async () => {
+      await mongoose.connection.collections.clients.drop();
       client = new Client({
         name: 'Client',
         projects: [
@@ -141,12 +138,6 @@ describe('snapshot_request_controller.js', () => {
               { status: 'active', name: 'name2', sequence: 2 }],
           },
         ],
-      });
-    });
-
-    afterEach((done) => {
-      mongoose.connection.collections.clients.drop(() => {
-        done();
       });
     });
 
