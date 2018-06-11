@@ -36,8 +36,10 @@ app.use((err, req, res, next) => {
 
 app.use(express.static(path.join(config.root)));
 
-app.listen(process.env.PORT || config.app.port);
+const port = (process.env.PORT || config.app.port);
 
-console.log('Snapspace app listening');
+app.listen(port);
+
+console.log(`Snapspace app listening at ${port}`);
 
 module.exports = app;

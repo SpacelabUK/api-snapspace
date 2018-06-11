@@ -10,6 +10,7 @@
     "express": "^4.14.0",
     "file-system": "^2.2.2",
     "mongoose": "^5.0.15",
+    "mongoose-unique-validator": "^2.0.1",
     "mongoose-validator": "^2.0.2",
     "sinon-chai": "^3.0.0"
   },
@@ -20,7 +21,8 @@
   "scripts": {
     "start": "node server.js",
     "test": "set NODE_ENV=development&&mocha --exit",
-    "dev": "set NODE_ENV=development&&node server.js"
+    "dev": "set NODE_ENV=development&&node server.js",
+    "dev-debug": "set NODE_ENV=development&&node --inspect server.js"
   },
   "repository": {
     "type": "git",

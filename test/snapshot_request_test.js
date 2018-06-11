@@ -62,9 +62,10 @@ describe('snapshot_request_controller.js', () => {
       expect(updatedClient.projects[0].snapshotRequests).to.have.length(2);
       expect(updatedClient.projects[0].snapshotRequests[0].sequence).to.equal(1);
       expect(updatedClient.projects[0].snapshotRequests[1].name).to.equal('name2');
+      expect(updatedClient.projects[0].snapshotRequests[1].status).to.equal('active');
     });
 
-    it('should return a 200 response with the saved requests as a JSON', async () => {
+    it('should return a 200 response in JSON format', async () => {
       const savedClient = await client.save();
 
       const clId = savedClient._id;
@@ -76,8 +77,28 @@ describe('snapshot_request_controller.js', () => {
 
       expect(response.statusCode).to.equal(200);
       expect(response.type).to.equal('application/json');
+    });
+
+    it('should return saved requests, including with database IDs', async () => {
+      const savedClient = await client.save();
+
+      const clId = savedClient._id;
+      const prId = savedClient.projects[0]._id;
+
+      const response = await request(app)
+        .post(`/client/${clId}/project/${prId}/snapshotRequests`)
+        .send(req);
+
       expect(response.body[0].name).to.equal('name1');
       expect(response.body[1].name).to.equal('name2');
+
+      const updatedClient = await Client.findOne({
+        _id: savedClient._id,
+      });
+
+      // checking that returned request includes valid database ID
+      const savedRequestId = response.body[1]._id;
+      expect(updatedClient.projects[0].snapshotRequests.id(savedRequestId).name).to.equal('name2');
     });
 
     it('should update existing snapshot requests for the specified client and project', async () => {
@@ -103,6 +124,7 @@ describe('snapshot_request_controller.js', () => {
 
       expect(updatedClient.projects[0].snapshotRequests[0].name).to.equal('name3');
       expect(updatedClient.projects[0].snapshotRequests[1].name).to.equal('name4');
+      expect(updatedClient.projects[0].snapshotRequests[1].status).to.equal('active');
     });
   });
 
@@ -139,7 +161,7 @@ describe('snapshot_request_controller.js', () => {
       expect(response.type).to.equal('application/json');
     });
 
-    it.only('should return snapshot requests for the specified client and project', async () => {
+    it('should return snapshot requests for the specified client and project', async () => {
       const savedClient = await client.save();
 
       const snapshotRequestsUrl = `/client/${savedClient._id}/project/${savedClient.projects[0]._id}/snapshotRequests`;
@@ -147,6 +169,24 @@ describe('snapshot_request_controller.js', () => {
         .get(snapshotRequestsUrl);
 
       expect(response.body[0].name).to.equal('name1');
+    });
+
+    it('should return 404 if client or project Id not found', async () => {
+      const savedClient = await client.save();
+
+      await Client.deleteOne({ _id: savedClient._id });
+
+      let snapshotRequestsUrl = `/client/${savedClient._id}/project/${savedClient.projects[0]._id}/snapshotRequests`;
+      let response = await request(app)
+        .get(snapshotRequestsUrl);
+
+      expect(response.statusCode).to.equal(404);
+
+      snapshotRequestsUrl = `/client/${savedClient._id}/project/${savedClient.projects[0]._id}/snapshotRequests`;
+      response = await request(app)
+        .get(snapshotRequestsUrl);
+
+      expect(response.statusCode).to.equal(404);
     });
   });
 });

@@ -41,7 +41,7 @@ const config = {
       region: 'eu-west-2',
     },
     app: {
-      port: 8080,
+      port: 9000,
     },
     database: {
       uri: 'mongodb://localhost:27017/snapspace_dev',

@@ -18,6 +18,13 @@
             "${workspaceFolder}/test"
         ],
         "internalConsoleOptions": "openOnSessionStart"
+    },
+    {
+        "type": "node",
+        "request": "launch",
+        "name": "Launch Program",
+        "env": {"NODE_ENV": "development"},
+        "program": "${workspaceRoot}/server.js"
     }
     ]
 }
