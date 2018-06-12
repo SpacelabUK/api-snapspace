@@ -25,10 +25,8 @@ describe('snapshot_request_controller.js', () => {
     beforeEach(async () => {
       await mongoose.connection.collections.clients.drop();
 
-      req = {
-        snapshotRequests: [{ status: 'active', name: 'name1', sequence: 1 },
-          { status: 'active', name: 'name2', sequence: 2 }],
-      };
+      req = [{ status: 'active', name: 'name1', sequence: 1 },
+        { status: 'active', name: 'name2', sequence: 2 }];
 
       client = new Client({
         name: 'Client',
@@ -98,16 +96,14 @@ describe('snapshot_request_controller.js', () => {
     });
 
     it('should update existing snapshot requests for the specified client and project', async () => {
-      client.projects[0].snapshotRequests = req.snapshotRequests;
+      client.projects[0].snapshotRequests = req;
       const savedClient = await client.save();
 
       const clId = savedClient._id;
       const prId = savedClient.projects[0]._id;
       savedClient.projects[0].snapshotRequests[0].name = 'name3';
       savedClient.projects[0].snapshotRequests[1].name = 'name4';
-      req = {
-        snapshotRequests: savedClient.projects[0].snapshotRequests,
-      };
+      req = savedClient.projects[0].snapshotRequests;
 
       await request(app)
         .post(`/client/${clId}/project/${prId}/snapshotRequests`)

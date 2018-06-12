@@ -34,7 +34,7 @@ const saveSnapshotRequests = async (req, res, next) => {
 
     const currentRequests = client.projects.id(req.params.prId).snapshotRequests;
 
-    const updatedRequests = req.body.snapshotRequests;
+    const updatedRequests = req.body;
 
     // Set any existing requests in DB that are
     // not in the new and updated requests to 'Deleted'
