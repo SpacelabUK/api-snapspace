@@ -22,7 +22,25 @@ const createClient = async (req, res, next) => {
   }
 };
 
+const getClients = async (req, res, next) => {
+  try {
+    const clients = await Client.find({});
+
+    if (clients.length) {
+      res.status(200).json(clients);
+    } else {
+      const error = new Error('Clients not found');
+      error.status = 404;
+      next(error);
+    }
+  } catch (err) {
+    const error = new Error(err.message);
+    next(error);
+  }
+};
+
 module.exports = {
   createClient,
+  getClients,
 };
 

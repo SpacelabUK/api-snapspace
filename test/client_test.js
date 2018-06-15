@@ -62,4 +62,51 @@ describe('client_controller.js', () => {
       expect(response.statusCode).to.equal(409);
     });
   });
+
+  describe('getClients', () => {
+    let clientOne;
+    let clientTwo;
+
+    before(async () => {
+      await mongoose.connect(config.database.uri);
+    });
+
+    beforeEach(async () => {
+      await mongoose.connection.collections.clients.drop();
+      clientOne = {
+        name: 'ClientOne',
+        projects: [
+          {
+            name: 'ProjectOne',
+            snapshotRequests: [{ status: 'active', name: 'name1', sequence: 1 },
+              { status: 'active', name: 'name2', sequence: 2 }],
+          },
+        ],
+      };
+      clientTwo = JSON.parse(JSON.stringify(clientOne));
+      clientTwo.name = 'ClientTwo';
+      clientTwo.projects[0].name = 'ProjectTwo';
+    });
+
+    it('should return all saved clients and projects', async () => {
+      const newClientOne = new Client(clientOne);
+      await newClientOne.save();
+
+      const newClientTwo = new Client(clientTwo);
+      await newClientTwo.save();
+
+      const response = await request(app)
+        .get('/clients');
+
+      expect(response.body[0].name).to.equal(clientOne.name);
+      expect(response.body[1].projects[0].name).to.equal(clientTwo.projects[0].name);
+    });
+
+    it('should return 404 if no clients found', async () => {
+      const response = await request(app)
+        .get('/clients');
+
+      expect(response.statusCode).to.equal(404);
+    });
+  });
 });
