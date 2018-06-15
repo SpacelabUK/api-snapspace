@@ -11,15 +11,8 @@ describe('snapshot_request_controller.js', () => {
     let client;
     let req;
 
-    before((done) => {
-      mongoose.connect(config.database.uri);
-      mongoose.connection
-        .once('open', () => {
-          done();
-        })
-        .on('error', (error) => {
-          console.log(error);
-        });
+    before(async () => {
+      await mongoose.connect(config.database.uri);
     });
 
     beforeEach(async () => {
@@ -122,6 +115,10 @@ describe('snapshot_request_controller.js', () => {
 
   describe('getSnapshotRequests', () => {
     let client;
+
+    before(async () => {
+      await mongoose.connect(config.database.uri);
+    });
 
     beforeEach(async () => {
       await mongoose.connection.collections.clients.drop();

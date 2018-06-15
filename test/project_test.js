@@ -13,16 +13,14 @@ describe('project_controller.js', () => {
     let project;
 
     before(async () => {
-      try {
-        await mongoose.connect(config.database.uri);
-      } catch (error) {
-        console.log(error);
-      }
+      await mongoose.connect(config.database.uri);
     });
 
     beforeEach(async () => {
-      await mongoose.connection.collections.clients.drop();
-
+      const clients = await Client.find({});
+      if (clients.length) {
+        await mongoose.connection.collections.clients.drop();
+      }
       client = new Client({
         name: 'Client',
         projects: [{ name: 'ProjectOne' }],
