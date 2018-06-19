@@ -22,8 +22,7 @@
     "start": "node server.js",
     "test": "set NODE_ENV=development&&mocha --exit",
     "dev": "set NODE_ENV=development&&node server.js",
-    "dev-debug": "set NODE_ENV=development&&node --inspect server.js",
-    "mongo": "md mongo-db & \"C:/MongoDb/Server/3.2/bin/mongod.exe\" --dbpath mongo-db"
+    "dev-debug": "set NODE_ENV=development&&node --inspect server.js"
   },
   "repository": {
     "type": "git",
