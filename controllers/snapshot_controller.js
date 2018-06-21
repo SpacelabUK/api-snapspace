@@ -22,6 +22,7 @@ const saveSnapshot = (req, res, next) => {
   const snapshot = new Snapshot({
     imageURL: req.body.imageURL,
     comment: req.body.comment,
+    requestId: req.body.requestId,
   });
   snapshot.save()
     .then(() => res.send(200))

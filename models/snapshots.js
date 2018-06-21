@@ -16,6 +16,10 @@ const SnapshotSchema = new Schema({
     required: true,
     validate: (imageURLValidator),
   },
+  requestId: {
+    type: String,
+    required: true,
+  },
   comment: { type: String, required: true },
 });
 
