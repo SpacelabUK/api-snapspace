@@ -22,7 +22,8 @@
     "start": "node server.js",
     "test": "set NODE_ENV=development&&mocha --exit",
     "dev": "set NODE_ENV=development&&node server.js",
-    "dev-debug": "set NODE_ENV=development&&node --inspect server.js"
+    "dev-debug": "set NODE_ENV=development&&node --inspect server.js",
+    "mongoose-sandbox": "node mongoose_sandbox.js"
   },
   "repository": {
     "type": "git",
