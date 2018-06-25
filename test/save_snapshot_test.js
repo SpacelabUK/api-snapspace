@@ -33,7 +33,7 @@ describe('createSnapshotRecord', () => {
     snapshotData = {
       imageURL: 'https://s3.eu-west-2.amazonaws.com/snapspace-dev/1524242200913.jpg',
       comment: 'comment',
-      requestId: '1234',
+      requestId: 'A1234',
     };
   });
 

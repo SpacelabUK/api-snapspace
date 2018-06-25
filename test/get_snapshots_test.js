@@ -65,6 +65,7 @@ describe('getSnapshots', () => {
       .get('/snapshots');
 
     expect(response.statusCode).to.equal(500);
+    snapshotStub.restore();
   });
 });
 
