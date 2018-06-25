@@ -17,7 +17,7 @@ describe('getSnapshots', () => {
 
   beforeEach(() => {
     snapshot = new Snapshot({
-      imageURL: 'https://validurl.com',
+      imageUrl: 'https://validurl.com',
       comment: 'comment',
       requestId: 'A123',
     });
@@ -46,7 +46,7 @@ describe('getSnapshots', () => {
       .get('/snapshots');
 
     expect(response.body[0].comment).to.equal(snapshot.comment);
-    expect(response.body[0].imageURL).to.equal(snapshot.imageURL);
+    expect(response.body[0].imageUrl).to.equal(snapshot.imageUrl);
   });
 
   it('should return 404 if no snapshots found', async () => {

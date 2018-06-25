@@ -20,7 +20,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "set NODE_ENV=development&&mocha --exit",
+    "test": "set NODE_ENV=development&&nyc --reporter=html mocha --exit",
     "dev": "set NODE_ENV=development&&node server.js",
     "dev-debug": "set NODE_ENV=development&&node --inspect server.js",
     "mongoose-sandbox": "node mongoose_sandbox.js"
@@ -43,6 +43,7 @@
     "eslint-plugin-import": "^2.11.0",
     "mocha": "^5.0.5",
     "nodeman": "^1.1.2",
+    "nyc": "^12.0.2",
     "sinon": "^4.5.0",
     "supertest": "^3.0.0",
     "validator": "^10.0.0"

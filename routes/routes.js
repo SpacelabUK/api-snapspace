@@ -1,6 +1,6 @@
 const express = require('express');
 const { saveSnapshot, getSnapshots } = require('../controllers/snapshot_controller.js');
-const { getAWSConfig } = require('../controllers/aws_signing_controller.js');
+const { getImageUploadConfig } = require('../controllers/image_upload_config_controller.js');
 const { saveSnapshotRequests, getSnapshotRequests } = require('../controllers/snapshot_request_controller');
 const { createClient, getClients } = require('../controllers/client_controller.js');
 const { createProject } = require('../controllers/project_controller');
@@ -8,7 +8,7 @@ const { createProject } = require('../controllers/project_controller');
 const router = express.Router();
 
 // provides Amazon S3 config to front-end so snapshot image can be saved to AWS
-router.get('/image-aws-config', getAWSConfig);
+router.get('/image-upload-config', getImageUploadConfig);
 
 router.get('/snapshots', getSnapshots);
 

@@ -20,12 +20,12 @@ const getSnapshots = (req, res, next) => {
 //  saves snapshot to DB and sends success message to user
 const saveSnapshot = (req, res, next) => {
   const snapshot = new Snapshot({
-    imageURL: req.body.imageURL,
+    imageUrl: req.body.imageUrl,
     comment: req.body.comment,
     requestId: req.body.requestId,
   });
   snapshot.save()
-    .then(() => res.send(200))
+    .then(() => res.sendStatus(200))
     .catch((err) => {
       const error = new Error(err.message);
       if (err.name === 'ValidationError') {

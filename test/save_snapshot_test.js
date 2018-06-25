@@ -31,7 +31,7 @@ describe('createSnapshotRecord', () => {
       await mongoose.connection.collections.snapshots.drop();
     }
     snapshotData = {
-      imageURL: 'https://s3.eu-west-2.amazonaws.com/snapspace-dev/1524242200913.jpg',
+      imageUrl: 'https://s3.eu-west-2.amazonaws.com/snapspace-dev/1524242200913.jpg',
       comment: 'comment',
       requestId: 'A1234',
     };
@@ -52,25 +52,25 @@ describe('createSnapshotRecord', () => {
       .send(req);
 
     const savedSnapshots = await Snapshot.find({});
-    expect(savedSnapshots[0].imageURL).to.equal(req.imageURL);
+    expect(savedSnapshots[0].imageUrl).to.equal(req.imageUrl);
     expect(savedSnapshots[0].comment).to.equal(req.comment);
     expect(savedSnapshots[0].requestId).to.equal(req.requestId);
   });
 
   it('should be invalid if image URL is empty', (done) => {
-    snapshotData.imageURL = '';
+    snapshotData.imageUrl = '';
     const snapshot = new Snapshot(snapshotData);
     snapshot.validate((err) => {
-      expect(err.errors.imageURL).to.exist;
+      expect(err.errors.imageUrl).to.exist;
       done();
     });
   });
 
   it('should be invalid if image URL is not a valid URL', (done) => {
-    snapshotData.imageURL = 'test';
+    snapshotData.imageUrl = 'test';
     const snapshot = new Snapshot(snapshotData);
     snapshot.validate((err) => {
-      expect(err.errors.imageURL).to.exist;
+      expect(err.errors.imageUrl).to.exist;
       done();
     });
   });
@@ -87,7 +87,7 @@ describe('createSnapshotRecord', () => {
   });
 
   it('should respond with 422 and error message if image URL is not valid', async () => {
-    snapshotData.imageURL = 'test';
+    snapshotData.imageUrl = 'test';
 
     const res = await request(app)
       .post('/snapshot')

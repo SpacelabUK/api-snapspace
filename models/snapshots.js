@@ -3,7 +3,7 @@ const validate = require('mongoose-validator');
 
 const { Schema } = mongoose;
 
-const imageURLValidator = [
+const imageUrlValidator = [
   validate({
     validator: 'isURL',
     message: 'invalid image URL',
@@ -11,10 +11,10 @@ const imageURLValidator = [
 ];
 
 const SnapshotSchema = new Schema({
-  imageURL: {
+  imageUrl: {
     type: String,
     required: true,
-    validate: (imageURLValidator),
+    validate: (imageUrlValidator),
   },
   requestId: {
     type: String,
