@@ -19,6 +19,7 @@ describe('getSnapshots', () => {
     snapshot = new Snapshot({
       imageURL: 'https://validurl.com',
       comment: 'comment',
+      requestId: 'A123',
     });
   });
 
