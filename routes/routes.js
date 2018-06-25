@@ -25,4 +25,8 @@ router.post('/client', createClient);
 
 router.post('/client/:clId/project', createProject);
 
+router.post('/message', (req) => {
+  console.log(req.body);
+});
+
 module.exports = router;
