@@ -88,7 +88,7 @@ describe('snapshot_request_controller.js', () => {
       expect(updatedClient.projects[0].snapshotRequests.id(savedRequestId).name).to.equal('name2');
     });
 
-    it('should update existing snapshot requests for the specified client and project', async () => {
+    it.only('should update existing snapshot requests for the specified client and project', async () => {
       client.projects[0].snapshotRequests = req;
       const savedClient = await client.save();
 
@@ -96,6 +96,7 @@ describe('snapshot_request_controller.js', () => {
       const prId = savedClient.projects[0]._id;
       savedClient.projects[0].snapshotRequests[0].name = 'name3';
       savedClient.projects[0].snapshotRequests[1].name = 'name4';
+      savedClient.projects[0].snapshotRequests[1].status = 'deleted';
       req = savedClient.projects[0].snapshotRequests;
 
       await request(app)
@@ -109,7 +110,7 @@ describe('snapshot_request_controller.js', () => {
 
       expect(updatedClient.projects[0].snapshotRequests[0].name).to.equal('name3');
       expect(updatedClient.projects[0].snapshotRequests[1].name).to.equal('name4');
-      expect(updatedClient.projects[0].snapshotRequests[1].status).to.equal('active');
+      expect(updatedClient.projects[0].snapshotRequests[1].status).to.equal('deleted');
     });
   });
 
