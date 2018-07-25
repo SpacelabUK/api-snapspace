@@ -33,7 +33,6 @@ describe('snapshot_request_controller.js', () => {
 
     it('should save new snapshot requests for the specified client and project', async () => {
       const savedClient = await client.save();
-
       const clId = savedClient._id;
       const prId = savedClient.projects[0]._id;
 
