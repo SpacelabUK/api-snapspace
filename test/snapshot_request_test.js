@@ -7,17 +7,23 @@ const mongoose = require('mongoose');
 const app = require('../server.js');
 
 describe('snapshot_request_controller.js', () => {
+  before(async () => {
+    await mongoose.connect(config.database.uri);
+  });
+
+  beforeEach(async () => {
+    await Client.remove({});
+  });
+
+  after(async () => {
+    await mongoose.connection.close();
+  });
+
   describe('updateSnapshotRequests', () => {
     let client;
     let req;
 
-    before(async () => {
-      await mongoose.connect(config.database.uri);
-    });
-
     beforeEach(async () => {
-      await mongoose.connection.collections.clients.drop();
-
       req = [{ status: 'active', name: 'name1', sequence: 1 },
         { status: 'active', name: 'name2', sequence: 2 }];
 
@@ -87,7 +93,7 @@ describe('snapshot_request_controller.js', () => {
       expect(updatedClient.projects[0].snapshotRequests.id(savedRequestId).name).to.equal('name2');
     });
 
-    it.only('should update existing snapshot requests for the specified client and project', async () => {
+    it('should update existing snapshot requests for the specified client and project', async () => {
       client.projects[0].snapshotRequests = req;
       const savedClient = await client.save();
 
@@ -116,19 +122,14 @@ describe('snapshot_request_controller.js', () => {
   describe('getSnapshotRequests', () => {
     let client;
 
-    before(async () => {
-      await mongoose.connect(config.database.uri);
-    });
-
     beforeEach(async () => {
-      await mongoose.connection.collections.clients.drop();
       client = new Client({
         name: 'Client',
         projects: [
           {
             name: 'Project',
             snapshotRequests: [{ status: 'active', name: 'name1', sequence: 1 },
-              { status: 'active', name: 'name2', sequence: 2 }],
+              { status: 'deleted', name: 'name2', sequence: 2 }],
           },
         ],
       });
@@ -145,7 +146,7 @@ describe('snapshot_request_controller.js', () => {
       expect(response.type).to.equal('application/json');
     });
 
-    it('should return snapshot requests for the specified client and project', async () => {
+    it('should return only ACTIVE snapshot requests for the specified client and project', async () => {
       const savedClient = await client.save();
 
       const snapshotRequestsUrl = `/client/${savedClient._id}/project/${savedClient.projects[0]._id}/snapshotRequests`;
@@ -153,6 +154,8 @@ describe('snapshot_request_controller.js', () => {
         .get(snapshotRequestsUrl);
 
       expect(response.body[0].name).to.equal('name1');
+      expect(response.body[0].status).to.equal('active');
+      expect(response.body.length).to.equal(1);
     });
 
     it('should return 404 if client or project Id not found', async () => {

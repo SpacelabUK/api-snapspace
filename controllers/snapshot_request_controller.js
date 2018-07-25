@@ -6,18 +6,19 @@ const getSnapshotRequests = async (req, res, next) => {
       _id: req.params.clId,
     });
 
-    let requests;
+    let activeRequests;
 
     if (client && client.projects.id(req.params.prId)) {
-      requests = client.projects.id(req.params.prId).snapshotRequests;
+      const savedRequests = client.projects.id(req.params.prId).snapshotRequests;
+      activeRequests = savedRequests.filter(savedRequest => savedRequest.status === 'active');
     }
 
-    if (!requests || !Array.isArray(requests) || !requests.length) {
+    if (!activeRequests || !Array.isArray(activeRequests) || !activeRequests.length) {
       const error = new Error('Snapshot requests not found');
       error.status = 404;
       next(error);
     } else {
-      res.status(200).json(requests);
+      res.status(200).json(activeRequests);
     }
   } catch (err) {
     const error = new Error(err.message);
@@ -31,36 +32,25 @@ const saveSnapshotRequests = async (req, res, next) => {
     let client = await Client.findOne({
       _id: req.params.clId,
     });
-
-    const currentRequests = client.projects.id(req.params.prId).snapshotRequests;
+    const storedRequests = client.projects.id(req.params.prId).snapshotRequests;
 
     const updatedRequests = req.body;
 
-    // Set any existing requests in DB that are
-    // not in the new and updated requests to 'Deleted'
-    for (const currentRequest of currentRequests) {
-      const currentRequestId = currentRequest._id.toString();
-      const matchedRequest =
-        updatedRequests.find(updatedRequest => updatedRequest._id === currentRequestId);
-      if (!matchedRequest) {
-        currentRequest.status = 'deleted';
-      }
-    }
-
     // Save new and updated requests
     for (const updatedRequest of updatedRequests) {
-      const currentRequest = currentRequests.id(updatedRequest._id);
+      const currentRequest = storedRequests.id(updatedRequest._id);
       if (currentRequest) {
         currentRequest.name = updatedRequest.name;
         currentRequest.sequence = updatedRequest.sequence;
-        currentRequest.status = 'active';
+        currentRequest.status = updatedRequest.status;
       } else {
-        currentRequests.push(updatedRequest);
+        storedRequests.push(updatedRequest);
       }
     }
 
     client = await client.save();
-    res.status(200).json(currentRequests);
+
+    res.status(200).json(storedRequests);
   } catch (err) {
     const error = new Error(err.message);
     next(error);
